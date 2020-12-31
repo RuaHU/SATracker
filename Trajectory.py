@@ -7,27 +7,6 @@ Created on Mon Sep 23 09:51:50 2019
 """
 import numpy as np
 
-
-def IOU(box1, box2):
-    '''
-    box1: [cx, cy, w, h]
-    box2: [cx, cy, w, h]
-    '''
-    b1, b2 = np.array(box1.copy()), np.array(box2.copy())
-    b1[:2] -= (b1[:2] * 0.5)
-    b2[:2] -= (b2[:2] * 0.5)
-    b1[2:] += b1[:2]
-    b2[2:] += b2[:2]
-    if b1[0] > b2[2] or b1[1] > b2[3] or b2[0] > b1[2] or b2[1] > b1[3]:
-        return 0
-    yx_min = np.maximum(b1[:2], b2[:2])
-    yx_max = np.minimum(b1[2:], b2[2:])
-    it = np.clip((yx_max - yx_min), 0, np.inf)
-    ia = it[0] * it[1]
-    a1 = (b1[2] - b1[0]) * (b1[3] - b1[1])
-    a2 = (b2[2] - b2[0]) * (b2[3] - b2[1])
-    return ia / (a1 +a2 - ia)
-
 class TrackState(object):
     New = 0
     Tracked = 1
